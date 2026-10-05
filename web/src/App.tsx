@@ -6,6 +6,8 @@ import { getCredentialDetails } from "./lib/data";
 import { dataSource } from "./lib/supabase";
 import type { CredentialDetail } from "./lib/types";
 import DocumentPanel from "./DocumentPanel";
+import IssuerDashboard from "./IssuerDashboard";
+import ContractorDashboard from "./ContractorDashboard";
 
 type CredView = { id: string; label: string; valid: boolean };
 // off-chain credential detail joined with its on-chain validity
@@ -217,6 +219,9 @@ export default function App() {
               </button>
             </div>
           </div>
+
+          <IssuerDashboard onChanged={refresh} />
+          <ContractorDashboard onChanged={refresh} />
         </>
       )}
 

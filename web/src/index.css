@@ -45,3 +45,19 @@ button:disabled { opacity: .5; cursor: default; }
   cursor: pointer;
 }
 .filebtn.disabled { opacity: .5; cursor: default; }
+
+/* dashboard forms */
+.field { margin-bottom: 12px; }
+.field > label { display: block; font-size: 12px; color: #37414d; margin-bottom: 4px; font-weight: 600; }
+.field input[type="text"],
+.field input:not([type]),
+.field input[type="date"],
+.field select {
+  width: 100%;
+  padding: 7px 10px;
+  border: 1px solid #d6dbe1;
+  border-radius: 6px;
+  font-size: 14px;
+}
+.check { display: block; font-size: 14px; margin: 4px 0; cursor: pointer; }
+.check input { margin-right: 8px; }

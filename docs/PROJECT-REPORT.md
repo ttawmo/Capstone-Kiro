@@ -137,13 +137,13 @@ Running checklist. Check items off as they are completed and add a change-log ro
 - [x] T15. Add a single `npm run reset` convenience for the demo (fresh node + deploy + seed); made seed idempotent
 - [x] T16. Wire the UI to an off-chain data layer (Supabase + local fallback), with a panel joining off-chain metadata to on-chain status
 - [x] T17. Document upload + SHA-256 hashing in the UI, verified against on-chain `verifyDocument` (DOCUMENT INTACT / ALTERED)
+- [x] T18. Issuer & contractor dashboards — issue credentials and create activities from the UI (on-chain + off-chain)
+- [x] T19. Tamper-detection screen in the UI (delivered by the T17 DocumentPanel)
 
 ### To do
 
 - [ ] T14. **Business validation** (S2) — confirm the pain or lock the reframe,
       by end of Day 2. Owner: Person 5 + 1. See `docs/business-validation.md`.
-- [ ] T18. Issuer/contractor dashboards to create credentials & activities from the UI
-- [ ] T19. Tamper-detection screen in the UI
 - [ ] T20. (Optional) MetaMask wallet signing instead of local dev keys
 - [ ] T21. (Optional) Add Tailwind styling (currently plain CSS — ADR 0003)
 - [ ] T22. Record a clean demo video as a fallback (Day 11)
@@ -194,14 +194,13 @@ Owner column (optional): add names next to tasks as the team divides work.
 | F12 | Web UI: eligibility, credential status, revoke, approve, log | `web/src/App.tsx` | Done |
 | F13 | Off-chain data layer (Supabase + local fallback) + UI panel joining off-chain metadata to on-chain status | `web/src/lib/{supabase,data,types}.ts`, `web/src/App.tsx`, `db/seed.sql` | Done |
 | F14 | Document upload + browser SHA-256 + on-chain tamper verification (INTACT / ALTERED) | `web/src/lib/docs.ts`, `web/src/DocumentPanel.tsx` | Done |
+| F15 | Issuer & contractor dashboards — create credentials and activities from the UI (on-chain + off-chain write) | `web/src/{IssuerDashboard,ContractorDashboard}.tsx`, `web/src/lib/data.ts` | Done |
 
 ### Planned / build-up (not yet implemented)
 
 | # | Feature | Task | Notes |
 | --- | --- | --- | --- |
-| P3 | Issuer/contractor dashboards to create data from the UI | T18 | MVP seeds via script instead |
 | P4 | MetaMask wallet signing | T20 | stub in `getBrowserContract()` |
-| P5 | Tamper-detection screen in the UI | T19 | contract support exists |
 | P6 | Tailwind styling | T21 | currently plain CSS (ADR 0003) |
 
 ---
@@ -298,6 +297,7 @@ Record every meaningful change here (newest first): date, what changed, why.
 
 | Date | Change | Author |
 | --- | --- | --- |
+| 2026-10-05 | Added issuer & contractor dashboards to create credentials/activities from the UI (on-chain + off-chain). T18 done, F15 added. | — |
 | 2026-10-05 | Added document upload + browser SHA-256 + on-chain tamper verification (DOCUMENT INTACT/ALTERED). T17 done, F14 added. Recovered the full project from GitHub after a local-directory wipe (no work lost). | — |
 | 2026-10-05 | Wired UI to an off-chain data layer (Supabase + local fallback) with a panel joining off-chain metadata to on-chain status; added `db/seed.sql`. T16 done, F13 added. | — |
 | 2026-10-05 | Added `npm run reset` (fresh node + deploy + seed) and made the seed script idempotent. T15 done. | — |

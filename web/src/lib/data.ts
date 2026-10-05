@@ -138,3 +138,53 @@ export async function getCredentialDetails(): Promise<CredentialDetail[]> {
   }
   return out;
 }
+
+// ---- writes (off-chain metadata) ----
+// These persist the off-chain record that accompanies an on-chain write. The
+// on_chain_id links the two. In local mode they mutate the in-memory arrays so
+// the UI reflects new records immediately without a backend.
+
+export async function addCredential(row: CredentialRow): Promise<void> {
+  if (hasSupabase && supabase) {
+    const { error } = await supabase.from("credentials").insert(row);
+    if (error) throw error;
+    return;
+  }
+  const i = localCredentials.findIndex((c) => c.credential_id === row.credential_id);
+  if (i >= 0) localCredentials[i] = row;
+  else localCredentials.push(row);
+}
+
+export async function addActivity(row: ActivityRow): Promise<void> {
+  if (hasSupabase && supabase) {
+    const { error } = await supabase.from("activities").insert(row);
+    if (error) throw error;
+    return;
+  }
+  const i = localActivities.findIndex((a) => a.activity_id === row.activity_id);
+  if (i >= 0) localActivities[i] = row;
+  else localActivities.push(row);
+}
+
+/** Ensure a holder (worker or machine) exists off-chain for a credential. */
+export async function ensureHolder(holderRef: string, kind: "worker" | "machine"): Promise<void> {
+  if (kind === "worker") {
+    if (hasSupabase && supabase) {
+      await supabase
+        .from("workers")
+        .upsert({ worker_id: holderRef, name: holderRef, role: "operator", company: null });
+      return;
+    }
+    if (!localWorkers.find((w) => w.worker_id === holderRef)) {
+      localWorkers.push({ worker_id: holderRef, name: holderRef, role: "operator", company: null });
+    }
+  } else {
+    if (hasSupabase && supabase) {
+      await supabase.from("machines").upsert({ machine_id: holderRef, type: "equipment", owner: null });
+      return;
+    }
+    if (!localMachines.find((m) => m.machine_id === holderRef)) {
+      localMachines.push({ machine_id: holderRef, type: "equipment", owner: null });
+    }
+  }
+}
