@@ -134,12 +134,12 @@ Running checklist. Check items off as they are completed and add a change-log ro
 - [x] T11. Verify full flow end-to-end against a local node
 - [x] T12. Write MVP run guide, demo script, presentation outline
 - [x] T13. Create living project report (markdown + generated Word doc)
+- [x] T15. Add a single `npm run reset` convenience for the demo (fresh node + deploy + seed); made seed idempotent
 
 ### To do
 
 - [ ] T14. **Business validation** (S2) — confirm the pain or lock the reframe,
       by end of Day 2. Owner: Person 5 + 1. See `docs/business-validation.md`.
-- [ ] T15. Add a single `npm run reset` convenience for the demo (deploy + seed)
 - [ ] T16. Wire the UI to Supabase for off-chain metadata (schema in `db/schema.sql`)
 - [ ] T17. Document upload + SHA-256 hashing from the UI (contract support exists)
 - [ ] T18. Issuer/contractor dashboards to create credentials & activities from the UI
@@ -280,7 +280,15 @@ cd web && npm run dev      # http://localhost:5173
 ```
 
 Demo: activity shows ELIGIBLE → click "Revoke crane inspection" → NOT ELIGIBLE.
-Reset: restart node, then `npm run deploy && npm run seed`.
+
+**Reset to a clean ELIGIBLE state** (one command — fresh node + deploy + seed):
+
+```bash
+cd contracts && npm run reset
+```
+
+Then refresh the web app. (A revoked credential cannot be un-revoked by design,
+so a full reset needs a fresh contract — which `reset` handles for you.)
 
 ---
 
@@ -290,6 +298,7 @@ Record every meaningful change here (newest first): date, what changed, why.
 
 | Date | Change | Author |
 | --- | --- | --- |
+| 2026-10-05 | Added `npm run reset` (fresh node + deploy + seed) and made the seed script idempotent. T15 done. | — |
 | 2026-10-05 | Restructured report: added project workflow (§2), project steps/phases (§3), and a done/to-do task tracker (§4). | — |
 | 2026-10-05 | Added Word-document generation from the markdown source of truth. | — |
 | 2026-10-05 | Initial MVP: contract + 7 tests, deploy/seed scripts, web UI, docs. Report created. | — |
