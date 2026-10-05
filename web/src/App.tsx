@@ -5,9 +5,9 @@ import { DEMO, CRED_LABELS } from "./lib/demo";
 import { getCredentialDetails } from "./lib/data";
 import { dataSource } from "./lib/supabase";
 import type { CredentialDetail } from "./lib/types";
+import DocumentPanel from "./DocumentPanel";
 
 type CredView = { id: string; label: string; valid: boolean };
-
 // off-chain credential detail joined with its on-chain validity
 type JoinedCred = CredentialDetail & { onChainValid: boolean };
 
@@ -199,6 +199,8 @@ export default function App() {
               </div>
             ))}
           </div>
+
+          <DocumentPanel />
 
           <div className="card">
             <h2>Issuer actions — the demo moment</h2>

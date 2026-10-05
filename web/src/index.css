@@ -33,3 +33,15 @@ button:disabled { opacity: .5; cursor: default; }
 .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; color: #5b6673; }
 .log { background: #0d1117; color: #c9d1d9; border-radius: 8px; padding: 12px; font-family: ui-monospace, monospace; font-size: 12px; min-height: 60px; white-space: pre-wrap; }
 .err { color: #d1242f; font-size: 13px; }
+
+/* file-picker buttons (document integrity panel) */
+.filebtn {
+  display: inline-block;
+  background: #1f6feb;
+  color: #fff;
+  border-radius: 7px;
+  padding: 8px 14px;
+  font-size: 14px;
+  cursor: pointer;
+}
+.filebtn.disabled { opacity: .5; cursor: default; }
