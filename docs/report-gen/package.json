@@ -1,0 +1,13 @@
+{
+  "name": "ccn-report-gen",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Generates docs/PROJECT-REPORT.docx from docs/PROJECT-REPORT.md",
+  "type": "module",
+  "scripts": {
+    "build": "node generate.mjs"
+  },
+  "dependencies": {
+    "docx": "^8.5.0"
+  }
+}

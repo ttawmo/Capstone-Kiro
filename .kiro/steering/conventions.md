@@ -77,3 +77,9 @@ commit**:
 
 A hook (`.kiro/hooks/report-update-reminder.json`) flags this on source changes,
 but the edit is manual so the wording stays accurate.
+
+The report also has a Word copy at `docs/PROJECT-REPORT.docx`. The **markdown is
+the source of truth**; the `.docx` is generated from it by `docs/report-gen`
+(`npm run build`). A hook (`regenerate-report-docx`) regenerates the Word file
+when the markdown is saved. Never hand-edit the `.docx` — edit the markdown and
+regenerate.

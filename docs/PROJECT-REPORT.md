@@ -189,3 +189,18 @@ Update this file when you:
 A Kiro hook (`.kiro/hooks/report-update-reminder.json`) reminds you to update this
 file whenever contract or web source changes. The reminder is advisory — the
 actual edit is manual so the wording stays accurate.
+
+### Word document (`PROJECT-REPORT.docx`)
+
+This markdown file is the **source of truth**. A Word copy
+(`docs/PROJECT-REPORT.docx`) is **generated** from it, so after editing this
+markdown, regenerate the `.docx` so the two stay in sync:
+
+```bash
+cd docs/report-gen && npm install   # first time only
+npm run build                        # regenerates ../PROJECT-REPORT.docx
+```
+
+Do not edit the `.docx` by hand — changes there are overwritten on the next
+generate. Edit the markdown, then regenerate. A Kiro hook also reminds you to
+regenerate when the markdown changes.

@@ -1,0 +1,16 @@
+{
+  "version": "v1",
+  "hooks": [
+    {
+      "name": "Regenerate report Word doc",
+      "trigger": "PostFileSave",
+      "description": "When docs/PROJECT-REPORT.md is saved, regenerate docs/PROJECT-REPORT.docx so the Word copy stays in sync with the markdown source of truth.",
+      "matcher": "docs/PROJECT-REPORT\\.md$",
+      "action": {
+        "type": "command",
+        "command": "if [ -d docs/report-gen/node_modules ]; then cd docs/report-gen && npm run build; else echo \"report-gen deps not installed - run: cd docs/report-gen && npm install\"; fi",
+        "timeout": 120
+      }
+    }
+  ]
+}
