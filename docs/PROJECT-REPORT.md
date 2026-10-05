@@ -135,12 +135,12 @@ Running checklist. Check items off as they are completed and add a change-log ro
 - [x] T12. Write MVP run guide, demo script, presentation outline
 - [x] T13. Create living project report (markdown + generated Word doc)
 - [x] T15. Add a single `npm run reset` convenience for the demo (fresh node + deploy + seed); made seed idempotent
+- [x] T16. Wire the UI to an off-chain data layer (Supabase + local fallback), with a panel joining off-chain metadata to on-chain status
 
 ### To do
 
 - [ ] T14. **Business validation** (S2) — confirm the pain or lock the reframe,
       by end of Day 2. Owner: Person 5 + 1. See `docs/business-validation.md`.
-- [ ] T16. Wire the UI to Supabase for off-chain metadata (schema in `db/schema.sql`)
 - [ ] T17. Document upload + SHA-256 hashing from the UI (contract support exists)
 - [ ] T18. Issuer/contractor dashboards to create credentials & activities from the UI
 - [ ] T19. Tamper-detection screen in the UI
@@ -169,7 +169,7 @@ Owner column (optional): add names next to tasks as the team divides work.
 | Build tool / dev server | Vite | 5.4.21 |
 | Styling | Plain CSS (Tailwind deferred — ADR 0003) | — |
 | Runtime | Node.js | 24.21.0 |
-| Off-chain DB (planned) | Supabase / PostgreSQL | not wired in yet |
+| Off-chain DB | Supabase / PostgreSQL (`@supabase/supabase-js`) | 2.45.x — wired in with local fallback |
 | Version control | Git / GitHub | — |
 
 ---
@@ -192,12 +192,12 @@ Owner column (optional): add names next to tasks as the team divides work.
 | F10 | Deploy script (writes address + ABI) | `contracts/scripts/deploy.ts` | Done |
 | F11 | Demo seed script (known-good eligible state) | `contracts/scripts/seed.ts` | Done |
 | F12 | Web UI: eligibility, credential status, revoke, approve, log | `web/src/App.tsx` | Done |
+| F13 | Off-chain data layer (Supabase + local fallback) + UI panel joining off-chain metadata to on-chain status | `web/src/lib/{supabase,data,types}.ts`, `web/src/App.tsx`, `db/seed.sql` | Done |
 
 ### Planned / build-up (not yet implemented)
 
 | # | Feature | Task | Notes |
 | --- | --- | --- | --- |
-| P1 | Supabase off-chain store (metadata, activities, documents) | T16 | schema ready in `db/schema.sql` |
 | P2 | Document upload + hashing from the UI | T17 | contract side (`verifyDocument`) exists |
 | P3 | Issuer/contractor dashboards to create data from the UI | T18 | MVP seeds via script instead |
 | P4 | MetaMask wallet signing | T20 | stub in `getBrowserContract()` |
@@ -298,6 +298,7 @@ Record every meaningful change here (newest first): date, what changed, why.
 
 | Date | Change | Author |
 | --- | --- | --- |
+| 2026-10-05 | Wired UI to an off-chain data layer (Supabase + local fallback) with a panel joining off-chain metadata to on-chain status; added `db/seed.sql`. T16 done, F13 added. | — |
 | 2026-10-05 | Added `npm run reset` (fresh node + deploy + seed) and made the seed script idempotent. T15 done. | — |
 | 2026-10-05 | Restructured report: added project workflow (§2), project steps/phases (§3), and a done/to-do task tracker (§4). | — |
 | 2026-10-05 | Added Word-document generation from the markdown source of truth. | — |

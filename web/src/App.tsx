@@ -2,8 +2,14 @@ import { useCallback, useEffect, useState } from "react";
 import { ethers } from "ethers";
 import { getContract, getLocalSigner, getReadContract } from "./lib/contract";
 import { DEMO, CRED_LABELS } from "./lib/demo";
+import { getCredentialDetails } from "./lib/data";
+import { dataSource } from "./lib/supabase";
+import type { CredentialDetail } from "./lib/types";
 
 type CredView = { id: string; label: string; valid: boolean };
+
+// off-chain credential detail joined with its on-chain validity
+type JoinedCred = CredentialDetail & { onChainValid: boolean };
 
 export default function App() {
   const [connected, setConnected] = useState(false);
@@ -11,6 +17,7 @@ export default function App() {
   const [eligible, setEligible] = useState<boolean | null>(null);
   const [firstInvalid, setFirstInvalid] = useState<string>("");
   const [approved, setApproved] = useState<boolean>(false);
+  const [offChain, setOffChain] = useState<JoinedCred[]>([]);
   const [log, setLog] = useState<string>("Connect to the local node to begin.");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
@@ -36,6 +43,15 @@ export default function App() {
       const [, , appr] = await c.getActivity(DEMO.activity);
       setApproved(appr);
       setConnected(true);
+
+      // off-chain metadata joined with on-chain validity (via on_chain_id)
+      const details = await getCredentialDetails();
+      const joined: JoinedCred[] = [];
+      for (const d of details) {
+        const onChainValid = d.on_chain_id ? await c.isCredentialValid(d.on_chain_id) : false;
+        joined.push({ ...d, onChainValid });
+      }
+      setOffChain(joined);
     } catch (e: any) {
       setError(
         "Could not read contract. Is the local node running, deployed and seeded? " +
@@ -86,6 +102,12 @@ export default function App() {
         Proof-of-concept credential layer for crane lifting. Demo of the core workflow:
         issue → verify → activity → eligibility → revoke → NOT ELIGIBLE.
       </p>
+      <p className="sub">
+        Off-chain data source:{" "}
+        <span className={`badge ${dataSource === "supabase" ? "ok" : "muted"}`}>
+          {dataSource === "supabase" ? "Supabase" : "local (no credentials set)"}
+        </span>
+      </p>
 
       {!connected && (
         <div className="card">
@@ -133,6 +155,47 @@ export default function App() {
                 ) : (
                   <span className="badge bad">INVALID</span>
                 )}
+              </div>
+            ))}
+          </div>
+
+          <div className="card">
+            <h2>Off-chain credential records</h2>
+            <p className="sub" style={{ marginBottom: 10 }}>
+              Metadata and documents live off-chain; the blockchain holds only the
+              reference, status, and document hash. Each row links to its on-chain
+              record via <span className="mono">on_chain_id</span>.
+            </p>
+            {offChain.length === 0 && <p className="sub">No off-chain records.</p>}
+            {offChain.map((c) => (
+              <div className="cred" key={c.credential_id} style={{ alignItems: "flex-start" }}>
+                <div>
+                  <div>
+                    {c.type} — <span className="mono">{c.credential_id}</span>
+                  </div>
+                  <div className="mono">
+                    holder: {c.holder ? ("name" in c.holder ? c.holder.name : c.holder.type) : c.holder_ref}
+                  </div>
+                  <div className="mono">issuer: {c.issuer}</div>
+                  <div className="mono">expiry: {c.expiry ?? "—"}</div>
+                  {c.document && (
+                    <div className="mono">doc hash: {c.document.hash.slice(0, 18)}…</div>
+                  )}
+                </div>
+                <div style={{ textAlign: "right" }}>
+                  <div>
+                    <span className="mono">off-chain:</span>{" "}
+                    <span className={`badge ${c.status === "VALID" ? "ok" : "bad"}`}>{c.status}</span>
+                  </div>
+                  <div style={{ marginTop: 4 }}>
+                    <span className="mono">on-chain:</span>{" "}
+                    {c.onChainValid ? (
+                      <span className="badge ok">VALID</span>
+                    ) : (
+                      <span className="badge bad">INVALID</span>
+                    )}
+                  </div>
+                </div>
               </div>
             ))}
           </div>
