@@ -1,0 +1,16 @@
+{
+  "version": "v1",
+  "hooks": [
+    {
+      "name": "Contract tests on save",
+      "trigger": "PostFileSave",
+      "description": "Runs the Hardhat test suite whenever a Solidity or TS file under contracts/ is saved, so the six acceptance tests never silently go red.",
+      "matcher": "contracts/.*\\.(sol|ts)$",
+      "action": {
+        "type": "command",
+        "command": "if [ -f contracts/package.json ]; then cd contracts && npx hardhat test; else echo \"contracts not initialised yet - skipping\"; fi",
+        "timeout": 180
+      }
+    }
+  ]
+}

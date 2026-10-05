@@ -1,0 +1,15 @@
+{
+  "version": "v1",
+  "hooks": [
+    {
+      "name": "Contract tests after spec task",
+      "trigger": "PostTaskExec",
+      "description": "Runs the Hardhat test suite after each spec task is marked complete, enforcing the convention that no task is done on red tests.",
+      "action": {
+        "type": "command",
+        "command": "if [ -f contracts/package.json ]; then cd contracts && npx hardhat test; else echo \"contracts not initialised yet - skipping\"; fi",
+        "timeout": 180
+      }
+    }
+  ]
+}
