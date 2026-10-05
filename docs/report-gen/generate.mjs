@@ -185,7 +185,21 @@ while (i < lines.length) {
   const bullet = line.match(/^\s*[-*]\s+(.*)$/);
   const numbered = line.match(/^\s*\d+\.\s+(.*)$/);
   if (bullet) {
-    children.push(new Paragraph({ children: inlineRuns(bullet[1]), bullet: { level: 0 } }));
+    let text = bullet[1];
+    // render markdown task checkboxes as clear done/to-do markers
+    let prefixRuns = [];
+    const doneBox = text.match(/^\[x\]\s+(.*)$/i);
+    const openBox = text.match(/^\[ \]\s+(.*)$/);
+    if (doneBox) {
+      prefixRuns = [new TextRun({ text: "\u2713 ", bold: true, color: "0A7227" })];
+      text = doneBox[1];
+    } else if (openBox) {
+      prefixRuns = [new TextRun({ text: "\u2610 ", bold: true, color: "B4232C" })];
+      text = openBox[1];
+    }
+    children.push(
+      new Paragraph({ children: [...prefixRuns, ...inlineRuns(text)], bullet: { level: 0 } })
+    );
     i++;
     continue;
   }
