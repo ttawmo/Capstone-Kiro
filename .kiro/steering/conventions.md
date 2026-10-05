@@ -64,3 +64,16 @@ Every team member should be able to explain the full chain, regardless of their
 area:
 issuer → credential → blockchain → activity → eligibility check → clearance.
 The presentation is only ~10 minutes; no one can afford "that's someone else's part."
+
+## Living project report
+
+`docs/PROJECT-REPORT.md` is the single source of truth for features, scope, tech
+stack, and status. When you change the project, update the report in the **same
+commit**:
+- feature added/removed/changed → update the features table and add a change-log row
+- tech stack or major dependency version changed → update the stack table
+- scope changed (something moves in or out of bounds) → update the scope section
+- significant design decision → add an ADR in `docs/adr/` and reference it
+
+A hook (`.kiro/hooks/report-update-reminder.json`) flags this on source changes,
+but the edit is manual so the wording stays accurate.

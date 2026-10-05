@@ -1,0 +1,15 @@
+{
+  "version": "v1",
+  "hooks": [
+    {
+      "name": "Update project report on source change",
+      "trigger": "PostFileSave",
+      "description": "When contract or web source changes, reminds the agent to check whether docs/PROJECT-REPORT.md needs updating (features, stack, scope, change log).",
+      "matcher": "(contracts/contracts/.*\\.sol|contracts/scripts/.*\\.ts|web/src/.*\\.(ts|tsx)|contracts/package\\.json|web/package\\.json)$",
+      "action": {
+        "type": "agent",
+        "prompt": "A source or dependency file changed. Check whether docs/PROJECT-REPORT.md needs updating: features table (§4), tech stack and versions (§3), scope (§5), and the change log (§9). If this change adds/removes/alters a feature, changes the stack, or shifts scope, update PROJECT-REPORT.md in the same change and add a dated row to the §9 change log. If the change is cosmetic (formatting, comments), no report update is needed."
+      }
+    }
+  ]
+}
